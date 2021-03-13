@@ -4,7 +4,7 @@ var roleHarvester = {
   
     run: function(creep) {
         
-	    if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] == 0) {
+	if (creep.memory.harvesting && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.harvesting = false;
         }
         else if (!creep.memory.harvesting && creep.store.getFreeCapacity() == 0) {
