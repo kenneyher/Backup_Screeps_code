@@ -1,0 +1,37 @@
+var roleHarvester = require('role.harvester');
+
+var roleBuilder = {
+
+    /** @param {Creep} creep **/
+    run: function(creep) {
+
+	        if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
+                creep.memory.building = false;
+                creep.say('🔄 harvest');
+	        }
+	        else if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
+	            creep.memory.building = true;
+	            creep.say('🚧 build');
+	        }
+
+	        if(creep.memory.building) {
+	            var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+                if(target) {
+                    if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffe000'}});
+                    }
+                }else {
+                    roleHarvester.run(creep);
+                }
+	        }else {
+	            var sources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE
+	            );
+                if(creep.harvest(sources) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources, {visualizePathStyle: {stroke: '#fffea9'}});
+                }
+	        }
+	   
+    }
+};
+
+module.exports = roleBuilder;
