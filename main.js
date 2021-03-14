@@ -50,7 +50,8 @@ module.exports.loop = function () {
 
         var names = ['Anacleta', 'Pablito', 'Camilo', 'Adam', 'Frozono', 'Ultra T', 'Gambito', 'Penaldo', 'El Messias', 'MarAnthony', 'Derulo', 'Lollipop', 'Minimi',
         'Lobezno', 'Brayant', 'Kenneth', 'Alex', 'Cris', 'Sinforosia', 'Banana', 'Apple', 'Cafe', 'Feedback', 'Alan Brito', 'Carnaval', 'LittleMe', 'Agateyte',
-        'Chorotega', 'Colon', 'Batman', 'Cordoba', 'Cesarus', 'Antonius', 'Juanito', 'Fulanito', 'Sutano', 'SuperCreep', 'BatCreep', 'Bobby'];
+        'Chorotega', 'Colon', 'Batman', 'Cordoba', 'Cesarus', 'Antonius', 'Juanito', 'Fulanito', 'Sutano', 'SuperCreep', 'BatCreep', 'Bobby', 'AtrapaSueños',
+        'DreamCatcher', 'LunaLunera', 'SweetDreams', 'Dulcesuenos', 'Okar', 'Hattori', 'Codecombat', 'Impostor', 'Anonimous', 'Noob', 'Saibot'];
     
         let sources = spawn.room.find(FIND_SOURCES);
         for(let src of sources){
@@ -59,11 +60,13 @@ module.exports.loop = function () {
                     filter: s => s.structureType == STRUCTURE_CONTAINER
                 });
                 if(containers.length > 0 && miners.length < 1){
-                    var newName = names[Math.round(Math.random() * names.length)];
-                    var spwCreepRole = 'miner';
-                    var spw = spawn.spawnCreep([WORK, WORK, WORK, MOVE], newName, 
-                    {memory: {role: 'miner', sourceId: src.id }});
-                    break;
+                    if(spawnName == 'Wigans'){
+                        var newName = names[Math.round(Math.random() * names.length)];
+                        var spwCreepRole = 'miner';
+                        var spw = spawn.spawnCreep([WORK, WORK, WORK, MOVE], newName, 
+                            {memory: {role: 'miner', sourceId: src.id }});
+                        break;
+                    }
                 }
             }
         }
@@ -91,11 +94,13 @@ module.exports.loop = function () {
             var spw = spawn.spawnCreep(bodyparts, newName, 
                 {memory: {role: spwCreepRole}});
         }
-        else if(lorries.length < 1) {
-            var newName = names[Math.round(Math.random() * names.length)] ;
-            var spwCreepRole = 'lorry';
-            var spw = spawn.spawnCreep(bodyparts, newName, 
+        else if(lorries.length < 1 && spawnName == 'Wigans') {
+            if(spawnName == 'Wigans'){
+                var newName = names[Math.round(Math.random() * names.length)] ;
+                var spwCreepRole = 'lorry';
+                var spw = spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], newName, 
                 {memory: {role: spwCreepRole}});
+            }
         }
         else if(builders.length < spawn.memory.minBuilders) {
             var newName = names[Math.round(Math.random() * names.length)] ;
@@ -103,18 +108,18 @@ module.exports.loop = function () {
             var spw = spawn.spawnCreep(bodyparts, newName, 
                 {memory: {role: spwCreepRole}});
         }
-        else if(eUpgraders.length < 2) {
-            var newName = names[Math.round(Math.random() * names.length)];
-            var spwCreepRole = 'eUpgrader';
-            var spw = Game.spawns['Wigans'].spawnCreep(bodyparts, newName, 
-            {memory: {role: 'eUpgrader', target: 'W21S13', working: false}});
-        }
-        else if(eBuilders.length < 4) {
-            var newName = names[Math.round(Math.random() * names.length)];
-            var spwCreepRole = 'eBuilder';
-            var spw = Game.spawns['Wigans'].spawnCreep(bodyparts, newName, 
-            {memory: {role: spwCreepRole, target: 'W21S13'}});
-        }
+        // else if(eUpgraders.length < 2) {
+        //     var newName = names[Math.round(Math.random() * names.length)];
+        //     var spwCreepRole = 'eUpgrader';
+        //     var spw = Game.spawns['Wigans'].spawnCreep(bodyparts, newName, 
+        //     {memory: {role: 'eUpgrader', target: 'W21S13', working: false}});
+        // }
+        // else if(eBuilders.length < 4) {
+        //     var newName = names[Math.round(Math.random() * names.length)];
+        //     var spwCreepRole = 'eBuilder';
+        //     var spw = Game.spawns['Wigans'].spawnCreep(bodyparts, newName, 
+        //     {memory: {role: spwCreepRole, target: 'W21S13'}});
+        // }
         else if(towerManagers.length < spawn.memory.minTowerManagers) {
             var newName = names[Math.round(Math.random() * names.length)] ;
             var spwCreepRole = 'towerManager';
@@ -135,7 +140,7 @@ module.exports.loop = function () {
         }
     
         if(spw == OK){
-            console.log('Spawning a new creep: ' + newName + ', with role: ' + spwCreepRole);
+            console.log('' +spawnName + ' is spawning a new creep: ' + newName + ', with role: ' + spwCreepRole);
         }
     
         for(var name in Game.creeps) {
